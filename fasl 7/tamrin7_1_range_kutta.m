@@ -1,0 +1,19 @@
+clc; clear; close all
+
+f = @(x,y) sin(x)/y + y;
+
+dx = 0.1;
+X = 0:dx:4  ; % 0,0.1,0.2, .... , 4  
+Y = ones(1,length(X));
+m = 1;
+
+while X(m) < 4
+    k1 = f(X(m),Y(m));
+    k2 = f(X(m) + dx/2, Y(m) + k1*dx/2);
+    k3 = f(X(m) + dx/2, Y(m) + k2*dx/2);
+    k4 = f(X(m) + dx, Y(m) + k3*dx);
+    Y(m+1)  = Y(m) + dx/6 * ( k1 + 2*k2 + 2*k3 + k4);
+    m = m + 1; 
+end
+
+plot(X,Y);grid
