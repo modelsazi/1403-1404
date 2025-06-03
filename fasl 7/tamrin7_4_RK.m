@@ -7,7 +7,7 @@ x_start = 0;
 x_end   = 40;
 dx = 0.001;
 x = x_start:dx:x_end;
-y = zeros(3,length(x));  y(1) = 1; y(2) = 1; y(3) = 1;
+y = zeros(3,length(x));  y(1) = 0.9687; y(2) = 0.9687; y(3) = 1.013;
 i = 1;
 while i < length(x)
     k1 = f(x(i),y(:,i));
