@@ -18,12 +18,12 @@ T(1,:) = Ti;
 T(:,1) = Ti;
 T(:,nx)= Ti;
 
-alfa = k/p/Cp;
-beta = alfa*dt/dr^2;
+alpha = k/p/Cp;
+beta = qdot/p/Cp;
 
 for m=1:nt-1
     for i = 2:nx-1
-        T(m+1,i) = beta/r(i)*r(i+1)*T(m,i+1)+(1-beta/r(i)*(r(i+1)+r(i)))*T(m,i)+beta*T(m,i-1)+qdot*dt/p/Cp;
+        T(m+1,i) = T(m,i)+alpha*dt*(T(m,i+1)-2*T(m,i)+T(m,i-1))/dr^2+alpha*dt/r(i)*(T(m,i+1)-T(m,i-1))/2/dr+beta*dt;
     end
     T(m+1,1)  = T(m+1,2);
     T(m+1,nx) = (T(m+1,nx-1) + h*dr*Tinf/k)/(1+h*dr/k); 

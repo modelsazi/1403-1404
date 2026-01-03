@@ -13,19 +13,19 @@ nt=ndt+1;
 dt=Lt/ndt;
 t=0:dt:Lt;
 
-alfa = k*dt/2/p/Cp/dr^2;
-beta = qdot*dt/p/Cp;
+alpha = k/p/Cp;
+beta = qdot/p/Cp;
 
-T = ones(nt,nx)*Ti;
+T = ones(nt,nx); T(1,:) = Ti;
 
 for m = 1:nt-1
     A = zeros(nx,nx); b = zeros(nx,1);
     A(1,1) = 1; A(1,2) = -1; b(1) = 0;
     for i = 2:nx-1
-        A(i,i-1) = -alfa;
-        A(i,i)   = 1 + alfa/r(i)*( r(i+1) + r(i) );
-        A(i,i+1) = -alfa/r(i)*r(i+1);
-        b(i) = alfa*T(m,i-1)+( 1 - alfa/r(i)*( r(i+1) + r(i)) )*T(m,i)+alfa/r(i)*r(i+1)*T(m,i+1)+beta;
+        A(i,i-1) = alpha/(2*dr^2 )-alpha/(2*r(i)*dr);
+        A(i,i)   = -1/dt-alpha/(dr^2);
+        A(i,i+1) = alpha/(2*dr^2)+alpha/(2*r(i)*dr);
+        b(i) = -T(m,i)/dt-alpha/2*((T(m,i+1)-2*T(m,i)+T(m,i-1))/dr^2)-beta;
     end
     A(nx,nx) = 1 + h*dr/k; A(nx,nx-1) = -1; b(nx) = h*dr/k*Tinf;
     T(m+1,:) = (A\b)';
@@ -34,4 +34,3 @@ mesh(r,t,T)
 xlabel('r (m)')
 ylabel('t (s)')
 zlabel('T (^oC)')
-
